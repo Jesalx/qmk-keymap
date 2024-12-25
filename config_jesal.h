@@ -9,3 +9,6 @@
 #define CAPS_WORD_INVERT_ON_SHIFT
 // When idle, turn off Caps Word after 5 seconds
 #define CAPS_WORD_IDLE_TIMEOUT 10000
+
+#define SPLIT_LAYER_STATE_ENABLE
+#define RGB_MATRIX_DEFAULT_SPD 127
