@@ -29,10 +29,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
 
-#ifdef RGB_MATRIX_ENABLE
-      case RGB_DEF:
-        rgb_matrix_enable_noeeprom();
-        rgb_matrix_mode_noeeprom(RGB_MATRIX_ALPHAS_MODS);
-        rgb_matrix_sethsv_noeeprom(17, 255, 255);  // Amber color.
-        return false;
-#endif
