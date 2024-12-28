@@ -1,3 +1,5 @@
+#include "features/palettefx.h"
+
 enum layers {
     BASE,
     NAV,
@@ -30,17 +32,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 };
 
 void keyboard_post_init_user(void) {
-    rgb_matrix_enable_noeeprom();
-    rgb_matrix_sethsv_noeeprom(255, 255, 255);
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_CYCLE_LEFT_RIGHT);
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_SPARKLE);
+    uint8_t palette_index = PALETTEFX_AFTERBURN; 
+    rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * palette_index, 255, 255);
     rgb_matrix_set_speed_noeeprom(128);
+    rgb_matrix_enable_noeeprom();
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state|default_layer_state)) {
         case BASE:
-            rgb_matrix_sethsv_noeeprom(255, 255, 255);
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_CYCLE_LEFT_RIGHT);
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_SPARKLE);
+            uint8_t palette_index = PALETTEFX_AFTERBURN; 
+            rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * palette_index, 255, 255);
             break;
         case NAV:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
