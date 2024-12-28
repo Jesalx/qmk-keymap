@@ -32,9 +32,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 };
 
 void keyboard_post_init_user(void) {
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_SPARKLE);
-    uint8_t palette_index = PALETTEFX_AFTERBURN; 
-    rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * palette_index, 255, 255);
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_VORTEX);
+    rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * PALETTEFX_AFTERBURN, 255, 255);
     rgb_matrix_set_speed_noeeprom(128);
     rgb_matrix_enable_noeeprom();
 }
@@ -42,9 +41,8 @@ void keyboard_post_init_user(void) {
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state|default_layer_state)) {
         case BASE:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_SPARKLE);
-            uint8_t palette_index = PALETTEFX_AFTERBURN; 
-            rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * palette_index, 255, 255);
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_VORTEX);
+            rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * PALETTEFX_AFTERBURN, 255, 255);
             break;
         case NAV:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
@@ -59,8 +57,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgb_matrix_sethsv_noeeprom(43, 255, 255); // Yellow
             break;
         case GAME:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-            rgb_matrix_sethsv_noeeprom(216, 18, 180); // Light Purple
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_SPARKLE);
+            rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * PALETTEFX_PHOSPHOR, 255, 255);
             break;
         case NUMPAD:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
