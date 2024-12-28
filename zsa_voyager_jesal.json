@@ -273,8 +273,8 @@
       "KC_ENT",
       "KC_SPC",
       "KC_LGUI",
-      "KC_BSPC",
-      "KC_ESC"
+      "LT(2,KC_BSPC)",
+      "LT(1,KC_ESC)"
     ],
     [
       "KC_TRNS",
