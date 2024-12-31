@@ -2,7 +2,7 @@
 
 #define TAP_CODE_DELAY 5
 
-#define TAPPING_TERM 135
+#define TAPPING_TERM 125
 #define PERMISSIVE_HOLD
 
 // Hold shift for lower case
