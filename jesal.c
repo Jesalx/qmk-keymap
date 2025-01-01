@@ -49,8 +49,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgb_matrix_sethsv_noeeprom(0, 0, 0);
             break;
         case SYMBOLS:
-            rgb_matrix_sethsv_noeeprom(255, 255, 255);
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_CYCLE_LEFT_RIGHT);
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_SPARKLE);
+            rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * PALETTEFX_AFTERBURN, 255, 255);
             break;
         case QWERTY:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
