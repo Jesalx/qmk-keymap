@@ -270,7 +270,7 @@
       "KC_COMM",
       "KC_SCLN",
       "KC_DOT",
-      "KC_ENT",
+      "ANY(MT(MOD_RSFT, KC_ENT))",
       "KC_SPC",
       "KC_LGUI",
       "LT(2,KC_BSPC)",
