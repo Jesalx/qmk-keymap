@@ -56,7 +56,7 @@
       "KC_DOT",
       "ANY(MT(MOD_RSFT, KC_ENT))",
       "KC_SPC",
-      "ANY(MT(KC_LGUI, KC_UNDERSCORE))",
+      "LGUI_T(KC_UNDS)",
       "LT(2,KC_BSPC)",
       "LT(1,KC_ESC)"
     ],
@@ -272,7 +272,7 @@
       "KC_DOT",
       "ANY(MT(MOD_RSFT, KC_ENT))",
       "KC_SPC",
-      "ANY(MT(KC_LGUI, KC_UNDERSCORE))",
+      "LGUI_T(KC_UNDS)",
       "LT(2,KC_BSPC)",
       "LT(1,KC_ESC)"
     ],

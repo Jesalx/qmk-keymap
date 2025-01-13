@@ -27,6 +27,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING_DELAY("jesal.dev", TAP_CODE_DELAY);
         }
         break;
+    // We can't normally use a shifted key (minus -> underscore) with a mod tap
+    // so we can intercept the keypress and send the shifted keypress instead
+    case LGUI_T(KC_UNDERSCORE):
+        if (record->tap.count && record->event.pressed) {
+            tap_code16(KC_UNDERSCORE);
+            return false;
+        }
+        break;
     }
     return true;
 };
