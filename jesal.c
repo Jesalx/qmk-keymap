@@ -1,4 +1,5 @@
 #include "features/palettefx.h"
+#include "features/speculative_hold.h"
 
 enum layers {
     BASE,
