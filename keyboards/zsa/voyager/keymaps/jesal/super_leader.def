@@ -1,5 +1,5 @@
 // Leader sequences (tap the left thumb GUI key, then the keys below).
-// Replaces the toggles and F-keys of the SYSTEM layer.
+// Holds the lighting, toggles and F-keys that used to live on a SYSTEM layer.
 SEQ_KEY(rgb_toggle, (KC_L, KC_T), RM_TOGG)
 SEQ_KEY(rgb_gradient, (KC_L, KC_G), RGB_M_G)
 SEQ_KEY(nkro_toggle, (KC_N), NK_TOGG)

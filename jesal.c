@@ -6,7 +6,6 @@ enum layers {
     NAV,
     SYMBOLS,
     NUMPAD,
-    SYSTEM,
 };
 
 enum custom_keycodes {
@@ -137,10 +136,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         case NUMPAD:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
             rgb_matrix_sethsv_noeeprom(128, 255, 255); // Cyan
-            break;
-        case SYSTEM:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-            rgb_matrix_sethsv_noeeprom(213, 255, 255); // Purple
             break;
     }
     return state;
