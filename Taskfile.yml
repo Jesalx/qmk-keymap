@@ -7,7 +7,7 @@ vars:
   KEYMAP_JSON: zsa_voyager_jesal.json
   KEYMAP_SVG: keymap.svg
   # Must match the order of `enum layers` in jesal.c.
-  LAYER_NAMES: BASE NAV SYMBOLS QWERTY GAME NUMPAD SYSTEM
+  LAYER_NAMES: BASE NAV SYMBOLS NUMPAD SYSTEM
 
 tasks:
   json:

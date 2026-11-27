@@ -5,8 +5,6 @@ enum layers {
     BASE,
     NAV,
     SYMBOLS,
-    QWERTY,
-    GAME,
     NUMPAD,
     SYSTEM,
 };
@@ -61,14 +59,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         case SYMBOLS:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_SPARKLE);
             rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * PALETTEFX_AFTERBURN, 255, 255);
-            break;
-        case QWERTY:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-            rgb_matrix_sethsv_noeeprom(43, 255, 255); // Yellow
-            break;
-        case GAME:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_SPARKLE);
-            rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * PALETTEFX_PHOSPHOR, 255, 255);
             break;
         case NUMPAD:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
