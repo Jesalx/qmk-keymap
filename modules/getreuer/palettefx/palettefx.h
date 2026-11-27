@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2024-2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,7 @@
 
 /**
  * @file palettefx.h
- * @brief PaletteFx: Add more colors to your keyboard
- *
- * While most of QMK's built-in RGB matrix effects are based on a single color
- * hue, sampling from a palette of colors allows for more personality. PaletteFx
- * is a suite of custom effects for QMK's RGB Matrix in which the effect colors
- * are sampled from a palette, aka color gradient or color map.
- *
- * PaletteFx includes 16 palettes and 6 effects, with the possibility to define
- * additional palettes and effects.
+ * @brief PaletteFx community module: Add more colors to your keyboard
  *
  *
  * For full documentation, see
@@ -31,14 +23,53 @@
 
 #pragma once
 
+#include <stdint.h>
+#include "color.h"
+#include "palettefx_default_config.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+/** Gets the color data for the selected palette. */
+const uint16_t* palettefx_get_palette_data(void);
+
+/** Gets the color data for the ith palette. */
+const uint16_t* palettefx_get_palette_data_by_index(uint8_t i);
+
+/** Returns the number of palettes. */
+uint8_t palettefx_num_palettes(void);
+
+/**
+ * @brief Computes the interpolated HSV palette color at 0 <= x < 256.
+ *
+ * Looks up and linearly interpolates `palette` at 0 <= x < 256. The color
+ * saturation and value are scaled according to rgb_matrix_config.
+ *
+ * @note `palette` must point to a PROGMEM address.
+ *
+ * @param palette Pointer to PROGMEM of a size-16 table of HSV16 colors.
+ * @param x       Palette lookup position, a value in 0-255.
+ * @return HSV color.
+ */
+hsv_t palettefx_interp_color(const uint16_t* palette, uint8_t x);
+
+/**
+ * @brief Compute a scaled 16-bit time that wraps smoothly.
+ *
+ * Computes `timer` scaled by `scale`, returning the result as a uint16.
+ * Generally, the scaled time would have a discontinuity every ~65 seconds when
+ * `timer` wraps 16-bit range. This is corrected for to wrap smoothly mod 2^16.
+ *
+ * @param timer A 32-bit timer.
+ * @param scale Scale value in 0-255.
+ * @return Scaled time.
+ */
+uint16_t palettefx_scaled_time(uint32_t timer, uint8_t scale);
+
 // The following enum constants may be used to refer to PaletteFx palettes by
 // name. To set a particular palette programmatically, do e.g.
 //
-//     #include "features/palettefx.h"
 //     void keyboard_post_init_user(void) {
 //       uint8_t i = PALETTEFX_CARNIVAL;  // Set Carnival palette at startup.
 //       rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * i, 255, 255);
@@ -116,5 +147,4 @@ enum {
 #ifdef __cplusplus
 }
 #endif
-
 

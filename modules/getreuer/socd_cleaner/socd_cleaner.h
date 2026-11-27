@@ -78,17 +78,6 @@ typedef struct {
 /** Determines globally whether SOCD cleaner is enabled. */
 extern bool socd_cleaner_enabled;
 
-/** Opposing key pairs to filter. Defined by the keymap. */
-extern socd_cleaner_t socd_opposing_pairs[];
-extern const uint16_t socd_opposing_pairs_count;
-
-/**
- * Applies SOCD cleaning to a key event. Call from process_record_user().
- *
- * @return false if default handling of the event should be skipped.
- */
-bool process_record_socd_cleaner(uint16_t keycode, keyrecord_t* record);
-
 #ifdef __cplusplus
 }
 #endif

@@ -14,7 +14,3 @@ NKRO_ENABLE = yes
 OS_DETECTION_ENABLE = yes
 SPACE_CADET_ENABLE = no
 SWAP_HANDS_ENABLE = no
-
-RGB_MATRIX_CUSTOM_USER = yes
-
-SRC += features/socd_cleaner.c

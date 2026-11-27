@@ -1,6 +1,3 @@
-#include "features/palettefx.h"
-#include "features/socd_cleaner.h"
-
 enum layers {
     BASE,
     NAV,
@@ -9,8 +6,7 @@ enum layers {
 };
 
 enum custom_keycodes {
-    SOCDTOG = SAFE_RANGE,
-    RGBVALU,
+    RGBVALU = SAFE_RANGE,
     RGBVALD,
     RGBRAND,
     RGBDEF,
@@ -78,7 +74,6 @@ socd_cleaner_t socd_opposing_pairs[] = {
     {{KC_R, KC_S}, SOCD_CLEANER_LAST},
     {{KC_D, KC_T}, SOCD_CLEANER_LAST},
 };
-const uint16_t socd_opposing_pairs_count = ARRAY_SIZE(socd_opposing_pairs);
 
 // Palette and brightness shared by the layer colors and the leader lighting
 // sequences. Not saved to EEPROM, so they reset at power-up.
@@ -141,11 +136,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             tap_code(KC_ESC);
         }
         return false;
-    case SOCDTOG:
-        if (record->event.pressed) {
-            socd_cleaner_enabled = !socd_cleaner_enabled;
-        }
-        return false;
     case RGBVALU:
     case RGBVALD:
     case RGBRAND:
@@ -169,7 +159,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
     }
-    return process_record_socd_cleaner(keycode, record);
+    return true;
 };
 
 void keyboard_post_init_user(void) {
@@ -185,14 +175,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     const uint8_t layer = get_highest_layer(state|default_layer_state);
     switch (layer) {
         case BASE:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_VORTEX);
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_COMMUNITY_MODULE_PALETTEFX_VORTEX);
             break;
         case NAV:
         case NUMPAD:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
             break;
         case SYMBOLS:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_SPARKLE);
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_COMMUNITY_MODULE_PALETTEFX_SPARKLE);
             break;
     }
     lighting_apply_color(layer);

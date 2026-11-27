@@ -22,7 +22,12 @@
 
 #include "socd_cleaner.h"
 
-// On by default; toggle with SOCDTOG.
+ASSERT_COMMUNITY_MODULES_MIN_API_VERSION(1, 0, 0);
+
+// Defined in introspection.c.
+uint16_t socd_opposing_pairs_count(void);
+socd_cleaner_t* socd_opposing_pairs_get(uint16_t index);
+
 bool socd_cleaner_enabled = true;
 
 static void update_key(uint8_t keycode, bool press) {
@@ -80,9 +85,28 @@ static bool process_opposing_pair(
 }
 
 bool process_record_socd_cleaner(uint16_t keycode, keyrecord_t* record) {
+  switch (keycode) {
+    case SOCDON:  // Turn SOCD Cleaner on.
+      if (record->event.pressed) {
+        socd_cleaner_enabled = true;
+      }
+      return false;
+    case SOCDOFF:  // Turn SOCD Cleaner off.
+      if (record->event.pressed) {
+        socd_cleaner_enabled = false;
+      }
+      return false;
+    case SOCDTOG:  // Toggle SOCD Cleaner.
+      if (record->event.pressed) {
+        socd_cleaner_enabled = !socd_cleaner_enabled;
+      }
+      return false;
+  }
+
   if (socd_cleaner_enabled) {
-    for (uint16_t i = 0; i < socd_opposing_pairs_count; ++i) {
-      if (!process_opposing_pair(keycode, record, &socd_opposing_pairs[i])) {
+    for (int i = 0; i < (int)socd_opposing_pairs_count(); ++i) {
+      socd_cleaner_t* state = socd_opposing_pairs_get(i);
+      if (!process_opposing_pair(keycode, record, state)) {
         return false;
       }
     }
