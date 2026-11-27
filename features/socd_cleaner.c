@@ -22,8 +22,8 @@
 
 #include "socd_cleaner.h"
 
-// Off by default so typing is unaffected until toggled on.
-bool socd_cleaner_enabled = false;
+// On by default; toggle with SOCDTOG.
+bool socd_cleaner_enabled = true;
 
 static void update_key(uint8_t keycode, bool press) {
   if (press) {
