@@ -21,10 +21,14 @@ tasks:
     desc: Regenerate the layout image for the README from the keymap JSON
     deps: [json]
     cmds:
-      - >-
-        nix-shell -p keymap-drawer --run
-        'keymap parse -q {{.KEYMAP_JSON}} -l {{.LAYER_NAMES}}
-        | keymap draw -k {{.KEYBOARD}} - -o {{.KEYMAP_SVG}}'
+      # Use keymap-drawer from PATH when present (CI), else fetch it via nix.
+      - |
+        draw='keymap parse -q {{.KEYMAP_JSON}} -l {{.LAYER_NAMES}} | keymap draw -k {{.KEYBOARD}} - -o {{.KEYMAP_SVG}}'
+        if command -v keymap >/dev/null; then
+          sh -c "$draw"
+        else
+          nix-shell -p keymap-drawer --run "$draw"
+        fi
 
   lint:
     desc: Lint the GitHub Actions workflows (same check as CI)

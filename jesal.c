@@ -100,8 +100,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 };
 
 void keyboard_post_init_user(void) {
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_VORTEX);
-    rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * PALETTEFX_AFTERBURN, 255, 255);
+    layer_state_set_user(layer_state);
     rgb_matrix_set_speed_noeeprom(128);
     rgb_matrix_enable_noeeprom();
 }
@@ -132,13 +131,17 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
+// LED indices under the arrow keys (LEFT, DOWN, UP, RGHT) on the right-hand
+// home row; see the rgb_matrix layout in keyboards/zsa/voyager/keyboard.json.
+#define NAV_ARROWS_LED_FIRST 38
+#define NAV_ARROWS_LED_LAST 41
+
 bool rgb_matrix_indicators_user(void) {
     switch (get_highest_layer(layer_state|default_layer_state)) {
         case NAV:
-            rgb_matrix_set_color(38, 129, 216, 208);
-            rgb_matrix_set_color(39, 129, 216, 208);
-            rgb_matrix_set_color(40, 129, 216, 208);
-            rgb_matrix_set_color(41, 129, 216, 208);
+            for (uint8_t i = NAV_ARROWS_LED_FIRST; i <= NAV_ARROWS_LED_LAST; i++) {
+                rgb_matrix_set_color(i, 129, 216, 208);
+            }
             break;
     }
     return false;

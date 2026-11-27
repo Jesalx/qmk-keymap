@@ -71,14 +71,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: .github/workflows/build.yaml
       - name: Install tools
         run: |
-          pip install qmk keymap-drawer==0.23.0
+          pip install qmk keymap-drawer==0.23.0 go-task-bin
           qmk config user.qmk_home="$PWD/qmk_firmware"
       - name: Regenerate keymap JSON and SVG
-        run: |
-          qmk c2json -kb zsa/voyager -km jesal --no-cpp -o zsa_voyager_jesal.json keyboards/zsa/voyager/keymaps/jesal/keymap.c
-          rm -f zsa_voyager_jesal.json.bak
-          keymap parse -q zsa_voyager_jesal.json -l BASE NAV SYMBOLS NUMPAD SYSTEM | keymap draw -k zsa/voyager - -o keymap.svg
+        run: task
       - name: Fail if generated files are stale
         run: git diff --exit-code -- zsa_voyager_jesal.json keymap.svg
