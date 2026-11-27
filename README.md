@@ -52,8 +52,9 @@ Tap the left thumb key (tap = leader, hold = GUI), then the keys below. Sequence
 | `L D` | `RGBVALD` | Decrease lighting brightness |
 | `L R` | `RGBRAND` | Random lighting palette |
 | `L L` | `RGBDEF` | Reset lighting to the default |
-| `N` | `NK_TOGG` | Toggle NKRO |
-| `S` | `SOCDTOG` | Toggle SOCD cleaning |
+| `T S` | `SOCDTOG` | Toggle SOCD cleaning |
+| `T N` | `NK_TOGG` | Toggle NKRO |
+| `T D` | `DB_TOGG` | Toggle QMK debug output |
 | `F 1` | `KC_F1` | F1 |
 | `F 2` | `KC_F2` | F2 |
 | `F 3` | `KC_F3` | F3 |
