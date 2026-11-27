@@ -4,9 +4,12 @@
 // turns them into the table at the bottom of the README.
 SEQ_KEY(rgb_toggle, (KC_L, KC_T), RM_TOGG) // Toggle RGB lighting
 SEQ_KEY(rgb_gradient, (KC_L, KC_G), RGB_M_G) // Gradient lighting effect
+SEQ_KEY(rgb_brighter, (KC_L, KC_U), RGBVALU) // Increase lighting brightness
+SEQ_KEY(rgb_dimmer, (KC_L, KC_D), RGBVALD) // Decrease lighting brightness
+SEQ_KEY(rgb_random, (KC_L, KC_R), RGBRAND) // Random lighting palette
+SEQ_KEY(rgb_default, (KC_L, KC_L), RGBDEF) // Reset lighting to the default
 SEQ_KEY(nkro_toggle, (KC_N), NK_TOGG) // Toggle NKRO
 SEQ_KEY(socd_toggle, (KC_S), SOCDTOG) // Toggle SOCD cleaning
-SEQ_KEY(mac_toggle, (KC_M), MACTOG) // Toggle Mac mode (overrides OS detection)
 
 SEQ_KEY(f1, (KC_F, KC_1), KC_F1) // F1
 SEQ_KEY(f2, (KC_F, KC_2), KC_F2) // F2

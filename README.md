@@ -48,9 +48,12 @@ Tap the left thumb key (tap = leader, hold = GUI), then the keys below. Sequence
 | --- | --- | --- |
 | `L T` | `RM_TOGG` | Toggle RGB lighting |
 | `L G` | `RGB_M_G` | Gradient lighting effect |
+| `L U` | `RGBVALU` | Increase lighting brightness |
+| `L D` | `RGBVALD` | Decrease lighting brightness |
+| `L R` | `RGBRAND` | Random lighting palette |
+| `L L` | `RGBDEF` | Reset lighting to the default |
 | `N` | `NK_TOGG` | Toggle NKRO |
 | `S` | `SOCDTOG` | Toggle SOCD cleaning |
-| `M` | `MACTOG` | Toggle Mac mode (overrides OS detection) |
 | `F 1` | `KC_F1` | F1 |
 | `F 2` | `KC_F2` | F2 |
 | `F 3` | `KC_F3` | F3 |

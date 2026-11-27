@@ -21,4 +21,5 @@
 #define PALETTEFX_SPARKLE_ENABLE
 #define PALETTEFX_VORTEX_ENABLE
 
-#define PALETTEFX_AFTERBURN_ENABLE
+// All palettes, so the leader's random palette has something to pick from.
+#define PALETTEFX_ENABLE_ALL_PALETTES

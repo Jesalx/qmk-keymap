@@ -10,7 +10,10 @@ enum layers {
 
 enum custom_keycodes {
     SOCDTOG = SAFE_RANGE,
-    MACTOG,
+    RGBVALU,
+    RGBVALD,
+    RGBRAND,
+    RGBDEF,
     XOS_UNDO,
     XOS_REDO,
     XOS_CUT,
@@ -34,7 +37,7 @@ enum custom_keycodes {
 #define LEADER_GUI LGUI_T(KC_F24)
 
 // XOS_* keys send the Linux or macOS flavor of a shortcut. The mode is
-// auto-detected from the host; MACTOG overrides it (e.g. behind a KVM).
+// auto-detected from the host.
 static bool mac_mode = false;
 
 bool process_detected_host_os_user(os_variant_t os) {
@@ -70,6 +73,29 @@ socd_cleaner_t socd_opposing_pairs[] = {
 };
 const uint16_t socd_opposing_pairs_count = ARRAY_SIZE(socd_opposing_pairs);
 
+// Palette and brightness shared by the layer colors and the leader lighting
+// sequences. Not saved to EEPROM, so they reset at power-up.
+#define LIGHT_VAL_STEP 32
+static uint8_t light_palette = PALETTEFX_AFTERBURN;
+static uint8_t light_val = 255;
+
+// Sets the color for `layer` without touching the effect, so a leader tweak
+// doesn't undo an effect picked since the layer was entered.
+static void lighting_apply_color(uint8_t layer) {
+    switch (layer) {
+        case BASE:
+        case SYMBOLS:
+            rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * light_palette, 255, light_val);
+            break;
+        case NAV:
+            rgb_matrix_sethsv_noeeprom(0, 0, 0);
+            break;
+        case NUMPAD:
+            rgb_matrix_sethsv_noeeprom(128, 255, light_val); // Cyan
+            break;
+    }
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint16_t shortcut = os_shortcut(keycode);
     if (shortcut != KC_NO) {
@@ -104,9 +130,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             socd_cleaner_enabled = !socd_cleaner_enabled;
         }
         return false;
-    case MACTOG:
+    case RGBVALU:
+    case RGBVALD:
+    case RGBRAND:
+    case RGBDEF:
         if (record->event.pressed) {
-            mac_mode = !mac_mode;
+            if (keycode == RGBVALU) {
+                light_val = light_val > 255 - LIGHT_VAL_STEP ? 255 : light_val + LIGHT_VAL_STEP;
+            } else if (keycode == RGBVALD) {
+                light_val = light_val < LIGHT_VAL_STEP ? 0 : light_val - LIGHT_VAL_STEP;
+            } else if (keycode == RGBRAND) {
+                // PALETTEFX_USER_0 follows the built-in palettes, so it is their count.
+                light_palette = (light_palette + 1 + timer_read() % (PALETTEFX_USER_0 - 1)) % PALETTEFX_USER_0;
+            } else {
+                light_palette = PALETTEFX_AFTERBURN;
+                light_val = 255;
+                rgb_matrix_enable_noeeprom();
+                layer_state_set_user(layer_state); // Restores each layer's effect too.
+                return false;
+            }
+            lighting_apply_color(get_highest_layer(layer_state|default_layer_state));
         }
         return false;
     }
@@ -120,24 +163,20 @@ void keyboard_post_init_user(void) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (get_highest_layer(state|default_layer_state)) {
+    const uint8_t layer = get_highest_layer(state|default_layer_state);
+    switch (layer) {
         case BASE:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_VORTEX);
-            rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * PALETTEFX_AFTERBURN, 255, 255);
             break;
         case NAV:
+        case NUMPAD:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-            rgb_matrix_sethsv_noeeprom(0, 0, 0);
             break;
         case SYMBOLS:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_PALETTEFX_SPARKLE);
-            rgb_matrix_sethsv_noeeprom(RGB_MATRIX_HUE_STEP * PALETTEFX_AFTERBURN, 255, 255);
-            break;
-        case NUMPAD:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-            rgb_matrix_sethsv_noeeprom(128, 255, 255); // Cyan
             break;
     }
+    lighting_apply_color(layer);
     return state;
 }
 
