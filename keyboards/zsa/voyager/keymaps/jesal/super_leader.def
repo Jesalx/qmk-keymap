@@ -28,3 +28,7 @@ SEQ_KEY(f11, (KC_F, KC_MINS), KC_F11) // F11
 SEQ_KEY(browser_back, (KC_B, KC_B), KC_WBAK) // Browser back
 SEQ_KEY(browser_refresh, (KC_B, KC_R), KC_WREF) // Browser refresh
 SEQ_KEY(browser_search_selection, (KC_B, KC_S), SRCHSEL) // Search the selection in a new tab
+
+SEQ_STR(info_name, (KC_I, KC_N), "Jesal") // Type name
+SEQ_STR(info_website, (KC_I, KC_W), "jesal.dev") // Type website
+SEQ_STR(info_github, (KC_I, KC_G), "github.com/jesalx") // Type GitHub URL

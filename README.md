@@ -69,4 +69,7 @@ Tap the left thumb key (tap = leader, hold = GUI), then the keys below. Sequence
 | `B B` | `KC_WBAK` | Browser back |
 | `B R` | `KC_WREF` | Browser refresh |
 | `B S` | `SRCHSEL` | Search the selection in a new tab |
+| `I N` | `"Jesal"` | Type name |
+| `I W` | `"jesal.dev"` | Type website |
+| `I G` | `"github.com/jesalx"` | Type GitHub URL |
 <!-- leader:end -->
