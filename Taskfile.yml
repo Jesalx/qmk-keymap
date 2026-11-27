@@ -30,6 +30,11 @@ tasks:
           nix-shell -p keymap-drawer --run "$draw"
         fi
 
+  leader:
+    desc: Regenerate the leader sequence table in the README from super_leader.def
+    cmds:
+      - sh tools/leader_table.sh keyboards/zsa/voyager/keymaps/jesal/super_leader.def README.md
+
   lint:
     desc: Lint the GitHub Actions workflows (same check as CI)
     cmds:
@@ -44,3 +49,4 @@ tasks:
     desc: Regenerate all generated files
     cmds:
       - task: draw
+      - task: leader

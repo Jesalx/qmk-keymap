@@ -13,6 +13,8 @@ on:
       - "*.inc"
       - zsa_voyager_jesal.json
       - keymap.svg
+      - README.md
+      - tools/**
       - Taskfile.yml
   pull_request:
     paths:
@@ -25,6 +27,8 @@ on:
       - "*.inc"
       - zsa_voyager_jesal.json
       - keymap.svg
+      - README.md
+      - tools/**
       - Taskfile.yml
   workflow_dispatch:
 
@@ -80,4 +84,4 @@ jobs:
       - name: Regenerate keymap JSON and SVG
         run: task
       - name: Fail if generated files are stale
-        run: git diff --exit-code -- zsa_voyager_jesal.json keymap.svg
+        run: git diff --exit-code -- zsa_voyager_jesal.json keymap.svg README.md

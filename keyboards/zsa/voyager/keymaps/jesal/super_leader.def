@@ -1,23 +1,25 @@
 // Leader sequences (tap the left thumb GUI key, then the keys below).
 // Holds the lighting, toggles and F-keys that used to live on a SYSTEM layer.
-SEQ_KEY(rgb_toggle, (KC_L, KC_T), RM_TOGG)
-SEQ_KEY(rgb_gradient, (KC_L, KC_G), RGB_M_G)
-SEQ_KEY(nkro_toggle, (KC_N), NK_TOGG)
-SEQ_KEY(socd_toggle, (KC_S), SOCDTOG)
-SEQ_KEY(mac_toggle, (KC_M), MACTOG)
+// Every sequence needs a trailing `// description`: tools/leader_table.sh
+// turns them into the table at the bottom of the README.
+SEQ_KEY(rgb_toggle, (KC_L, KC_T), RM_TOGG) // Toggle RGB lighting
+SEQ_KEY(rgb_gradient, (KC_L, KC_G), RGB_M_G) // Gradient lighting effect
+SEQ_KEY(nkro_toggle, (KC_N), NK_TOGG) // Toggle NKRO
+SEQ_KEY(socd_toggle, (KC_S), SOCDTOG) // Toggle SOCD cleaning
+SEQ_KEY(mac_toggle, (KC_M), MACTOG) // Toggle Mac mode (overrides OS detection)
 
-SEQ_KEY(f1, (KC_F, KC_1), KC_F1)
-SEQ_KEY(f2, (KC_F, KC_2), KC_F2)
-SEQ_KEY(f3, (KC_F, KC_3), KC_F3)
-SEQ_KEY(f4, (KC_F, KC_4), KC_F4)
-SEQ_KEY(f5, (KC_F, KC_5), KC_F5)
-SEQ_KEY(f6, (KC_F, KC_6), KC_F6)
-SEQ_KEY(f7, (KC_F, KC_7), KC_F7)
-SEQ_KEY(f8, (KC_F, KC_8), KC_F8)
-SEQ_KEY(f9, (KC_F, KC_9), KC_F9)
-SEQ_KEY(f10, (KC_F, KC_0), KC_F10)
-SEQ_KEY(f11, (KC_F, KC_MINS), KC_F11)
+SEQ_KEY(f1, (KC_F, KC_1), KC_F1) // F1
+SEQ_KEY(f2, (KC_F, KC_2), KC_F2) // F2
+SEQ_KEY(f3, (KC_F, KC_3), KC_F3) // F3
+SEQ_KEY(f4, (KC_F, KC_4), KC_F4) // F4
+SEQ_KEY(f5, (KC_F, KC_5), KC_F5) // F5
+SEQ_KEY(f6, (KC_F, KC_6), KC_F6) // F6
+SEQ_KEY(f7, (KC_F, KC_7), KC_F7) // F7
+SEQ_KEY(f8, (KC_F, KC_8), KC_F8) // F8
+SEQ_KEY(f9, (KC_F, KC_9), KC_F9) // F9
+SEQ_KEY(f10, (KC_F, KC_0), KC_F10) // F10
+SEQ_KEY(f11, (KC_F, KC_MINS), KC_F11) // F11
 
-SEQ_KEY(browser_back, (KC_B, KC_B), KC_WBAK)
-SEQ_KEY(browser_refresh, (KC_B, KC_R), KC_WREF)
-SEQ_KEY(browser_search_selection, (KC_B, KC_S), SRCHSEL)
+SEQ_KEY(browser_back, (KC_B, KC_B), KC_WBAK) // Browser back
+SEQ_KEY(browser_refresh, (KC_B, KC_R), KC_WREF) // Browser refresh
+SEQ_KEY(browser_search_selection, (KC_B, KC_S), SRCHSEL) // Search the selection in a new tab
