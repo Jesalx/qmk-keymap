@@ -5,6 +5,7 @@ QMK external userspace. `jesal.c` is included by `keymaps/jesal/keymap.c`; third
 ## Commands
 
 - Build: `qmk compile -kb zsa/voyager -km jesal`
+- Lint: `task qmk-lint` (`qmk lint`; needs a comment as the first line of each keymap C/H file). `task check` runs all CI lints.
 - Flash: `task flash` (runs `qmk flash` inside `nix-shell -p dfu-util`)
 - Regenerate `zsa_voyager_jesal.json`, `keymap.svg` and the README leader table: `task`
 
@@ -14,4 +15,4 @@ QMK external userspace. `jesal.c` is included by `keymaps/jesal/keymap.c`; third
 - The left thumb key (`LEADER_GUI` in `jesal.c`) is tap = Super Leader, hold = GUI. Sequences live in `keymaps/jesal/super_leader.def`; each needs a trailing `// description`, which `tools/leader_table.sh` turns into the README table (between the `leader:start`/`leader:end` markers). The module is vendored (Apache-2.0, from `getreuer/qmk-modules`) in `modules/getreuer/super_leader` and enabled via the keymap's `keymap.json`.
 - `socd_cleaner` and `palettefx` are vendored the same way in `modules/getreuer/`. Module RGB effects are named `RGB_MATRIX_COMMUNITY_MODULE_<NAME>`, and `SOCDTOG` comes from the SOCD module.
 - QMK is built from upstream `qmk/qmk_firmware` master (`user.qmk_home`), not pinned.
-- CI (`.github/workflows/build.yaml`) builds the `qmk.json` target, runs `actionlint` (locally: `task lint`), and fails if `zsa_voyager_jesal.json` `keymap.svg` or `README.md` differ from what `task` regenerates (`keymap-drawer` is pinned to match nixpkgs).
+- CI (`.github/workflows/build.yaml`) builds the `qmk.json` target, runs `qmk lint`, `actionlint` (locally: `task lint`), and fails if `zsa_voyager_jesal.json` `keymap.svg` or `README.md` differ from what `task` regenerates (`keymap-drawer` is pinned to match nixpkgs).

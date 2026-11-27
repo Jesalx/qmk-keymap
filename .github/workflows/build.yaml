@@ -30,6 +30,11 @@ on:
       - Taskfile.yml
   workflow_dispatch:
 
+# A newer push to the same ref supersedes any run still in progress.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # The reusable workflow declares contents: write, and a caller must grant at
 # least what it requests or the run fails at startup.
 permissions:
@@ -79,6 +84,9 @@ jobs:
         run: |
           pip install qmk keymap-drawer==0.23.0 go-task-bin
           qmk config user.qmk_home="$PWD/qmk_firmware"
+          qmk config user.overlay_dir="$PWD"
+      - name: Lint keymap
+        run: task qmk-lint
       - name: Regenerate keymap JSON and SVG
         run: task
       - name: Fail if generated files are stale

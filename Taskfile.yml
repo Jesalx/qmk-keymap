@@ -40,6 +40,17 @@ tasks:
     cmds:
       - actionlint
 
+  qmk-lint:
+    desc: Lint the keymap with qmk lint (same check as CI)
+    cmds:
+      - qmk lint -kb {{.KEYBOARD}} -km {{.KEYMAP}}
+
+  check:
+    desc: Run every CI check locally
+    cmds:
+      - task: lint
+      - task: qmk-lint
+
   flash:
     desc: Compile and flash the keymap (put the keyboard in bootloader mode when prompted)
     cmds:

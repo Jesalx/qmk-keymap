@@ -1,3 +1,6 @@
+// Copyright 2026 Jesal Patel
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 #include QMK_KEYBOARD_H
 
 #include "voyager.h"
