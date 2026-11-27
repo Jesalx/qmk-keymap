@@ -14,7 +14,6 @@
 // between both dynamic macros (default is 128).
 #define DYNAMIC_MACRO_SIZE 256
 
-#define SPLIT_LAYER_STATE_ENABLE
 #define RGB_MATRIX_DEFAULT_SPD 127
 
 // PaletteFx effects/palettes

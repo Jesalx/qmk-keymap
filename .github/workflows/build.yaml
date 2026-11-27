@@ -8,6 +8,7 @@ on:
       - qmk.json
       - keyboards/**
       - features/**
+      - modules/**
       - "*.c"
       - "*.h"
       - "*.inc"
@@ -22,6 +23,7 @@ on:
       - qmk.json
       - keyboards/**
       - features/**
+      - modules/**
       - "*.c"
       - "*.h"
       - "*.inc"
@@ -52,10 +54,10 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Lint workflows
         run: |
-          docker run --rm -v "$PWD:/repo" --workdir /repo rhysd/actionlint:1.7.7 -color
+          docker run --rm -v "$PWD:/repo" --workdir /repo rhysd/actionlint:1.7.12 -color
 
   generated:
     name: generated files
@@ -64,15 +66,15 @@ jobs:
       contents: read
     steps:
       - name: Checkout userspace
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Checkout qmk_firmware
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: qmk/qmk_firmware
           ref: master
           path: qmk_firmware
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
