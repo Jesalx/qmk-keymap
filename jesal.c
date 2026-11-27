@@ -12,9 +12,7 @@ enum layers {
 };
 
 enum custom_keycodes {
-    USERNAME = SAFE_RANGE,
-    USERSITE,
-    SOCDTOG,
+    SOCDTOG = SAFE_RANGE,
 };
 
 // Movement: left = R, right = S, up = D, down = T
@@ -26,16 +24,6 @@ const uint16_t socd_opposing_pairs_count = ARRAY_SIZE(socd_opposing_pairs);
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-    case USERNAME:
-        if (record->event.pressed) {
-            SEND_STRING_DELAY("jesal", TAP_CODE_DELAY);
-        }
-        break;
-    case USERSITE:
-        if (record->event.pressed) {
-            SEND_STRING_DELAY("jesal.dev", TAP_CODE_DELAY);
-        }
-        break;
     // We can't normally use a shifted key (minus -> underscore) with a mod tap
     // so we can intercept the keypress and send the shifted keypress instead
     case LGUI_T(KC_UNDERSCORE):
