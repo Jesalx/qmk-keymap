@@ -157,6 +157,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 };
 
 void keyboard_post_init_user(void) {
+    // NKRO on at every power-up, regardless of what a past T N toggle saved to
+    // EEPROM. Not written back, so toggling it off lasts only for the session.
+    keymap_config.nkro = true;
     layer_state_set_user(layer_state);
     rgb_matrix_set_speed_noeeprom(128);
     rgb_matrix_enable_noeeprom();
