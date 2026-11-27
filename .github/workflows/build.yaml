@@ -1,0 +1,36 @@
+---
+name: build
+
+on:
+  push:
+    paths:
+      - .github/workflows/build.yaml
+      - qmk.json
+      - keyboards/**
+      - features/**
+      - "*.c"
+      - "*.h"
+      - "*.inc"
+      - zsa_voyager_jesal.json
+  pull_request:
+    paths:
+      - .github/workflows/build.yaml
+      - qmk.json
+      - keyboards/**
+      - features/**
+      - "*.c"
+      - "*.h"
+      - "*.inc"
+      - zsa_voyager_jesal.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: qmk userspace build
+    uses: qmk/.github/.github/workflows/qmk_userspace_build.yml@main
+    with:
+      qmk_repo: qmk/qmk_firmware
+      qmk_ref: master
