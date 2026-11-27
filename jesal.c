@@ -11,7 +11,48 @@ enum layers {
 
 enum custom_keycodes {
     SOCDTOG = SAFE_RANGE,
+    MACTOG,
+    XOS_UNDO,
+    XOS_REDO,
+    XOS_CUT,
+    XOS_COPY,
+    XOS_PASTE,
+    XOS_SALL,
+    XOS_FIND,
+    XOS_SAVE,
+    XOS_WORDL,
+    XOS_WORDR,
+    XOS_LINEL,
+    XOS_LINER,
 };
+
+// XOS_* keys send the Linux or macOS flavor of a shortcut. The mode is
+// auto-detected from the host; MACTOG overrides it (e.g. behind a KVM).
+static bool mac_mode = false;
+
+bool process_detected_host_os_user(os_variant_t os) {
+    mac_mode = (os == OS_MACOS || os == OS_IOS);
+    return true;
+}
+
+// Returns the keycode to send for an XOS_* key, or KC_NO for any other key.
+static uint16_t os_shortcut(uint16_t keycode) {
+    switch (keycode) {
+    case XOS_UNDO:  return mac_mode ? G(KC_Z)          : C(KC_Z);
+    case XOS_REDO:  return mac_mode ? G(S(KC_Z))       : C(S(KC_Z));
+    case XOS_CUT:   return mac_mode ? G(KC_X)          : C(KC_X);
+    case XOS_COPY:  return mac_mode ? G(KC_C)          : C(KC_C);
+    case XOS_PASTE: return mac_mode ? G(KC_V)          : C(KC_V);
+    case XOS_SALL:  return mac_mode ? G(KC_A)          : C(KC_A);
+    case XOS_FIND:  return mac_mode ? G(KC_F)          : C(KC_F);
+    case XOS_SAVE:  return mac_mode ? G(KC_S)          : C(KC_S);
+    case XOS_WORDL: return mac_mode ? A(KC_LEFT)       : C(KC_LEFT);
+    case XOS_WORDR: return mac_mode ? A(KC_RGHT)       : C(KC_RGHT);
+    case XOS_LINEL: return mac_mode ? G(KC_LEFT)       : KC_HOME;
+    case XOS_LINER: return mac_mode ? G(KC_RGHT)       : KC_END;
+    }
+    return KC_NO;
+}
 
 // Movement: left = R, right = S, up = D, down = T
 socd_cleaner_t socd_opposing_pairs[] = {
@@ -21,6 +62,16 @@ socd_cleaner_t socd_opposing_pairs[] = {
 const uint16_t socd_opposing_pairs_count = ARRAY_SIZE(socd_opposing_pairs);
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    uint16_t shortcut = os_shortcut(keycode);
+    if (shortcut != KC_NO) {
+        // Register/unregister (not tap) so holding the key repeats it.
+        if (record->event.pressed) {
+            register_code16(shortcut);
+        } else {
+            unregister_code16(shortcut);
+        }
+        return false;
+    }
     switch (keycode) {
     // We can't normally use a shifted key (minus -> underscore) with a mod tap
     // so we can intercept the keypress and send the shifted keypress instead
@@ -33,6 +84,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case SOCDTOG:
         if (record->event.pressed) {
             socd_cleaner_enabled = !socd_cleaner_enabled;
+        }
+        return false;
+    case MACTOG:
+        if (record->event.pressed) {
+            mac_mode = !mac_mode;
         }
         return false;
     }
