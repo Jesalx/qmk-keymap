@@ -28,6 +28,11 @@ enum custom_keycodes {
     XOS_WORDDEL,
 };
 
+// Tap starts a Super Leader sequence, hold is GUI. LEADER itself can't live in
+// a mod-tap, so the tap is intercepted in process_record_user (KC_F24 is only
+// a placeholder).
+#define LEADER_GUI LGUI_T(KC_F24)
+
 // XOS_* keys send the Linux or macOS flavor of a shortcut. The mode is
 // auto-detected from the host; MACTOG overrides it (e.g. behind a KVM).
 static bool mac_mode = false;
@@ -77,11 +82,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
     switch (keycode) {
-    // We can't normally use a shifted key (minus -> underscore) with a mod tap
-    // so we can intercept the keypress and send the shifted keypress instead
-    case LGUI_T(KC_UNDERSCORE):
+    case LEADER_GUI:
         if (record->tap.count && record->event.pressed) {
-            tap_code16(KC_UNDERSCORE);
+            super_leader_start();
             return false;
         }
         break;

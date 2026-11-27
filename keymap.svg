@@ -326,8 +326,9 @@ path.combo {
 </g>
 <g transform="translate(349, 333) rotate(30.0)" class="key keypos-49">
 <rect rx="6" ry="6" x="-26" y="-37" width="52" height="74" class="key"/>
-<text x="0" y="0" class="key tap">_</text>
-<text x="0" y="35" class="key hold">LGUI</text>
+<text x="0" y="0" class="key tap">
+<tspan x="0" dy="-0.6em">LEADER</tspan><tspan x="0" dy="1.2em">GUI</tspan>
+</text>
 </g>
 <g transform="translate(519, 333) rotate(-30.0)" class="key keypos-50">
 <rect rx="6" ry="6" x="-26" y="-37" width="52" height="74" class="key"/>

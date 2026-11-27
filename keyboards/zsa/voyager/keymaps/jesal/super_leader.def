@@ -1,0 +1,19 @@
+// Leader sequences (tap the left thumb GUI key, then the keys below).
+// Replaces the toggles and F-keys of the SYSTEM layer.
+SEQ_KEY(rgb_toggle, (KC_L, KC_T), RM_TOGG)
+SEQ_KEY(rgb_gradient, (KC_L, KC_G), RGB_M_G)
+SEQ_KEY(nkro_toggle, (KC_N), NK_TOGG)
+SEQ_KEY(socd_toggle, (KC_S), SOCDTOG)
+SEQ_KEY(mac_toggle, (KC_M), MACTOG)
+
+SEQ_KEY(f1, (KC_F, KC_1), KC_F1)
+SEQ_KEY(f2, (KC_F, KC_2), KC_F2)
+SEQ_KEY(f3, (KC_F, KC_3), KC_F3)
+SEQ_KEY(f4, (KC_F, KC_4), KC_F4)
+SEQ_KEY(f5, (KC_F, KC_5), KC_F5)
+SEQ_KEY(f6, (KC_F, KC_6), KC_F6)
+SEQ_KEY(f7, (KC_F, KC_7), KC_F7)
+SEQ_KEY(f8, (KC_F, KC_8), KC_F8)
+SEQ_KEY(f9, (KC_F, KC_9), KC_F9)
+SEQ_KEY(f10, (KC_F, KC_0), KC_F10)
+SEQ_KEY(f11, (KC_F, KC_MINS), KC_F11)
