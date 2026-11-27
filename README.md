@@ -73,6 +73,9 @@ Tap the left thumb key (tap = leader, hold = GUI), then the keys below. Sequence
 | `B C` | `XOS_CLOSETAB` | Close tab |
 | `B T` | `XOS_REOPENTAB` | Reopen closed tab |
 | `B U` | `URLCOPY` | Copy the page URL |
+| `J B` | `"jj b s  -r @-" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT)` | jj bookmark set at @-, cursor on the name |
+| `J C` | `"jj commit -m \"\"" SS_TAP(X_LEFT)` | jj commit with the cursor inside the quotes |
+| `J D` | `"jj desc -m \"\"" SS_TAP(X_LEFT)` | jj describe with the cursor inside the quotes |
 | `I N` | `"Jesal"` | Type name |
 | `I W` | `"jesal.dev"` | Type website |
 | `I G` | `"github.com/jesalx"` | Type GitHub URL |

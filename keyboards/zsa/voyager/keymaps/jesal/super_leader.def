@@ -33,6 +33,11 @@ SEQ_KEY(browser_close_tab, (KC_B, KC_C), XOS_CLOSETAB) // Close tab
 SEQ_KEY(browser_reopen_tab, (KC_B, KC_T), XOS_REOPENTAB) // Reopen closed tab
 SEQ_KEY(browser_copy_url, (KC_B, KC_U), URLCOPY) // Copy the page URL
 
+// Types the command, then taps Left 6 times to park the cursor on the name.
+SEQ_STR(jj_bookmark_set, (KC_J, KC_B), "jj b s  -r @-" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT)) // jj bookmark set at @-, cursor on the name
+SEQ_STR(jj_commit, (KC_J, KC_C), "jj commit -m \"\"" SS_TAP(X_LEFT)) // jj commit with the cursor inside the quotes
+SEQ_STR(jj_describe, (KC_J, KC_D), "jj desc -m \"\"" SS_TAP(X_LEFT)) // jj describe with the cursor inside the quotes
+
 SEQ_STR(info_name, (KC_I, KC_N), "Jesal") // Type name
 SEQ_STR(info_website, (KC_I, KC_W), "jesal.dev") // Type website
 SEQ_STR(info_github, (KC_I, KC_G), "github.com/jesalx") // Type GitHub URL
