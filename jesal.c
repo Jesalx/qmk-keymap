@@ -26,6 +26,7 @@ enum custom_keycodes {
     XOS_LINER,
     XOS_WORDBS,
     XOS_WORDDEL,
+    SRCHSEL,
 };
 
 // Tap starts a Super Leader sequence, hold is GUI. LEADER itself can't live in
@@ -88,6 +89,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         }
         break;
+    case SRCHSEL:
+        // Search the selection in a new browser tab: copy, open a tab (focuses
+        // the address bar), wait for the tab, paste, go.
+        if (record->event.pressed) {
+            tap_code16(os_shortcut(XOS_COPY));
+            tap_code16(mac_mode ? G(KC_T) : C(KC_T));
+            wait_ms(200);
+            tap_code16(os_shortcut(XOS_PASTE));
+            tap_code(KC_ENT);
+        }
+        return false;
     case SOCDTOG:
         if (record->event.pressed) {
             socd_cleaner_enabled = !socd_cleaner_enabled;
