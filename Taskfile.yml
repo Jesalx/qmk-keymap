@@ -1,0 +1,30 @@
+version: "3"
+
+vars:
+  KEYBOARD: zsa/voyager
+  KEYMAP: jesal
+  KEYMAP_C: keyboards/zsa/voyager/keymaps/jesal/keymap.c
+  KEYMAP_JSON: zsa_voyager_jesal.json
+  KEYMAP_SVG: keymap.svg
+  # Must match the order of `enum layers` in jesal.c.
+  LAYER_NAMES: BASE NAV SYMBOLS QWERTY GAME NUMPAD SYSTEM
+
+tasks:
+  json:
+    desc: Regenerate the keymap JSON (for config.qmk.fm) from keymap.c
+    cmds:
+      - qmk c2json -kb {{.KEYBOARD}} -km {{.KEYMAP}} --no-cpp -o {{.KEYMAP_JSON}} {{.KEYMAP_C}}
+
+  draw:
+    desc: Regenerate the layout image for the README from the keymap JSON
+    deps: [json]
+    cmds:
+      - >-
+        nix-shell -p keymap-drawer --run
+        'keymap parse -q {{.KEYMAP_JSON}} -l {{.LAYER_NAMES}}
+        | keymap draw -k {{.KEYBOARD}} - -o {{.KEYMAP_SVG}}'
+
+  default:
+    desc: Regenerate all generated files
+    cmds:
+      - task: draw
