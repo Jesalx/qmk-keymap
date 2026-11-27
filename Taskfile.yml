@@ -26,6 +26,11 @@ tasks:
         'keymap parse -q {{.KEYMAP_JSON}} -l {{.LAYER_NAMES}}
         | keymap draw -k {{.KEYBOARD}} - -o {{.KEYMAP_SVG}}'
 
+  flash:
+    desc: Compile and flash the keymap (put the keyboard in bootloader mode when prompted)
+    cmds:
+      - nix-shell -p dfu-util --run 'qmk flash -kb {{.KEYBOARD}} -km {{.KEYMAP}}'
+
   default:
     desc: Regenerate all generated files
     cmds:

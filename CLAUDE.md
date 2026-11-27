@@ -5,7 +5,7 @@ QMK external userspace. `jesal.c` is included by `keymaps/jesal/keymap.c`; third
 ## Commands
 
 - Build: `qmk compile -kb zsa/voyager -km jesal`
-- Flash: `nix-shell -p dfu-util --run 'qmk flash -kb zsa/voyager -km jesal'`
+- Flash: `task flash` (runs `qmk flash` inside `nix-shell -p dfu-util`)
 - Regenerate `zsa_voyager_jesal.json` and `keymap.svg`: `task`
 
 ## Conventions
