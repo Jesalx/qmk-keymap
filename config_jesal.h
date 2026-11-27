@@ -10,6 +10,10 @@
 // When idle, turn off Caps Word after 5 seconds
 #define CAPS_WORD_IDLE_TIMEOUT 10000
 
+// Each keypress takes two entries, so this fits about 128 keypresses shared
+// between both dynamic macros (default is 128).
+#define DYNAMIC_MACRO_SIZE 256
+
 #define SPLIT_LAYER_STATE_ENABLE
 #define RGB_MATRIX_DEFAULT_SPD 127
 
