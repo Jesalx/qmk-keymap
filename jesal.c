@@ -24,6 +24,8 @@ enum custom_keycodes {
     XOS_WORDR,
     XOS_LINEL,
     XOS_LINER,
+    XOS_WORDBS,
+    XOS_WORDDEL,
 };
 
 // XOS_* keys send the Linux or macOS flavor of a shortcut. The mode is
@@ -50,6 +52,8 @@ static uint16_t os_shortcut(uint16_t keycode) {
     case XOS_WORDR: return mac_mode ? A(KC_RGHT)       : C(KC_RGHT);
     case XOS_LINEL: return mac_mode ? G(KC_LEFT)       : KC_HOME;
     case XOS_LINER: return mac_mode ? G(KC_RGHT)       : KC_END;
+    case XOS_WORDBS:  return mac_mode ? A(KC_BSPC)     : C(KC_BSPC);
+    case XOS_WORDDEL: return mac_mode ? A(KC_DEL)      : C(KC_DEL);
     }
     return KC_NO;
 }
