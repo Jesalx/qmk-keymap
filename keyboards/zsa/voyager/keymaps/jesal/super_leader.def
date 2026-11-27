@@ -17,3 +17,7 @@ SEQ_KEY(f8, (KC_F, KC_8), KC_F8)
 SEQ_KEY(f9, (KC_F, KC_9), KC_F9)
 SEQ_KEY(f10, (KC_F, KC_0), KC_F10)
 SEQ_KEY(f11, (KC_F, KC_MINS), KC_F11)
+
+SEQ_KEY(browser_back, (KC_B, KC_B), KC_WBAK)
+SEQ_KEY(browser_refresh, (KC_B, KC_R), KC_WREF)
+SEQ_KEY(browser_search_selection, (KC_B, KC_S), SRCHSEL)
