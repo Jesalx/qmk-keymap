@@ -1,7 +1,5 @@
 # QMK Keymap
 
-![Keymap layout](keymap.svg)
-
 ## Installation
 
 1. [Set up qmk environment](https://docs.qmk.fm/newbs_getting_started)
@@ -31,8 +29,12 @@ nix-shell -p dfu-util --run 'qmk flash -kb zsa/voyager -km jesal'
 
 ## Editing the layout
 
-Edit only `keyboards/zsa/voyager/keymaps/jesal/keymap.c`. `zsa_voyager_jesal.json` (for viewing at [config.qmk.fm](https://config.qmk.fm)) and `keymap.svg` (the image above) are generated from it. Regenerate both with [go-task](https://taskfile.dev):
+Edit only `keyboards/zsa/voyager/keymaps/jesal/keymap.c`. `zsa_voyager_jesal.json` (for viewing at [config.qmk.fm](https://config.qmk.fm)) and `keymap.svg` (the image below) are generated from it. Regenerate both with [go-task](https://taskfile.dev):
 
 ```bash
 task
 ```
+
+## Layout
+
+![Keymap layout](keymap.svg)
