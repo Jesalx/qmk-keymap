@@ -332,7 +332,7 @@
     ],
     [
       "KC_NO",
-      "RGB_TOG",
+      "RM_TOGG",
       "RGB_M_G",
       "KC_NO",
       "KC_NO",
@@ -357,7 +357,7 @@
       "KC_NO",
       "KC_NO",
       "NK_TOGG",
-      "KC_NO",
+      "ANY(SOCDTOG)",
       "KC_NO",
       "KC_NO",
       "KC_NO",

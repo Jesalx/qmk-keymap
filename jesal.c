@@ -1,4 +1,5 @@
 #include "features/palettefx.h"
+#include "features/socd_cleaner.h"
 #include "features/speculative_hold.h"
 
 enum layers {
@@ -14,7 +15,15 @@ enum layers {
 enum custom_keycodes {
     USERNAME = SAFE_RANGE,
     USERSITE,
+    SOCDTOG,
 };
+
+// Movement: left = R, right = S, up = D, down = T
+socd_cleaner_t socd_opposing_pairs[] = {
+    {{KC_R, KC_S}, SOCD_CLEANER_LAST},
+    {{KC_D, KC_T}, SOCD_CLEANER_LAST},
+};
+const uint16_t socd_opposing_pairs_count = ARRAY_SIZE(socd_opposing_pairs);
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -36,8 +45,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         }
         break;
+    case SOCDTOG:
+        if (record->event.pressed) {
+            socd_cleaner_enabled = !socd_cleaner_enabled;
+        }
+        return false;
     }
-    return true;
+    return process_record_socd_cleaner(keycode, record);
 };
 
 void keyboard_post_init_user(void) {
