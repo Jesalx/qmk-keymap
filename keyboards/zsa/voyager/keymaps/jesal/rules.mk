@@ -15,5 +15,4 @@ SPACE_CADET_ENABLE = no
 
 RGB_MATRIX_CUSTOM_USER = yes
 
-SRC += features/speculative_hold.c
 SRC += features/socd_cleaner.c
