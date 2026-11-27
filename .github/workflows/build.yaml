@@ -24,8 +24,10 @@ on:
       - zsa_voyager_jesal.json
   workflow_dispatch:
 
+# The reusable workflow declares contents: write, and a caller must grant at
+# least what it requests or the run fails at startup.
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
