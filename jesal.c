@@ -28,7 +28,11 @@ enum custom_keycodes {
     XOS_LINER,
     XOS_WORDBS,
     XOS_WORDDEL,
+    XOS_NEWTAB,
+    XOS_CLOSETAB,
+    XOS_REOPENTAB,
     SRCHSEL,
+    URLCOPY,
 };
 
 // Tap starts a Super Leader sequence, hold is GUI. LEADER itself can't live in
@@ -62,6 +66,9 @@ static uint16_t os_shortcut(uint16_t keycode) {
     case XOS_LINER: return mac_mode ? G(KC_RGHT)       : KC_END;
     case XOS_WORDBS:  return mac_mode ? A(KC_BSPC)     : C(KC_BSPC);
     case XOS_WORDDEL: return mac_mode ? A(KC_DEL)      : C(KC_DEL);
+    case XOS_NEWTAB:    return mac_mode ? G(KC_T)      : C(KC_T);
+    case XOS_CLOSETAB:  return mac_mode ? G(KC_W)      : C(KC_W);
+    case XOS_REOPENTAB: return mac_mode ? G(S(KC_T))   : C(S(KC_T));
     }
     return KC_NO;
 }
@@ -119,10 +126,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // the address bar), wait for the tab, paste, go.
         if (record->event.pressed) {
             tap_code16(os_shortcut(XOS_COPY));
-            tap_code16(mac_mode ? G(KC_T) : C(KC_T));
+            tap_code16(os_shortcut(XOS_NEWTAB));
             wait_ms(200);
             tap_code16(os_shortcut(XOS_PASTE));
             tap_code(KC_ENT);
+        }
+        return false;
+    case URLCOPY:
+        // Copy the page URL: focus the address bar, copy, then Esc to leave it.
+        if (record->event.pressed) {
+            tap_code16(mac_mode ? G(KC_L) : C(KC_L));
+            wait_ms(50);
+            tap_code16(os_shortcut(XOS_COPY));
+            tap_code(KC_ESC);
         }
         return false;
     case SOCDTOG:

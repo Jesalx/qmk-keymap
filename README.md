@@ -68,7 +68,11 @@ Tap the left thumb key (tap = leader, hold = GUI), then the keys below. Sequence
 | `F -` | `KC_F11` | F11 |
 | `B B` | `KC_WBAK` | Browser back |
 | `B R` | `KC_WREF` | Browser refresh |
-| `B S` | `SRCHSEL` | Search the selection in a new tab |
+| `B S` | `SRCHSEL` | Search the selection (or clipboard) in a new tab |
+| `B N` | `XOS_NEWTAB` | New tab |
+| `B C` | `XOS_CLOSETAB` | Close tab |
+| `B T` | `XOS_REOPENTAB` | Reopen closed tab |
+| `B U` | `URLCOPY` | Copy the page URL |
 | `I N` | `"Jesal"` | Type name |
 | `I W` | `"jesal.dev"` | Type website |
 | `I G` | `"github.com/jesalx"` | Type GitHub URL |
