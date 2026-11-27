@@ -12,6 +12,8 @@ on:
       - "*.h"
       - "*.inc"
       - zsa_voyager_jesal.json
+      - keymap.svg
+      - Taskfile.yml
   pull_request:
     paths:
       - .github/workflows/build.yaml
@@ -22,6 +24,8 @@ on:
       - "*.h"
       - "*.inc"
       - zsa_voyager_jesal.json
+      - keymap.svg
+      - Taskfile.yml
   workflow_dispatch:
 
 # The reusable workflow declares contents: write, and a caller must grant at
@@ -36,3 +40,45 @@ jobs:
     with:
       qmk_repo: qmk/qmk_firmware
       qmk_ref: master
+
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Lint workflows
+        run: |
+          docker run --rm -v "$PWD:/repo" --workdir /repo rhysd/actionlint:1.7.7 -color
+
+  generated:
+    name: generated files
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout userspace
+        uses: actions/checkout@v4
+      - name: Checkout qmk_firmware
+        uses: actions/checkout@v4
+        with:
+          repository: qmk/qmk_firmware
+          ref: master
+          path: qmk_firmware
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install tools
+        run: |
+          pip install qmk keymap-drawer==0.23.0
+          qmk config user.qmk_home="$PWD/qmk_firmware"
+      - name: Regenerate keymap JSON and SVG
+        run: |
+          qmk c2json -kb zsa/voyager -km jesal --no-cpp -o zsa_voyager_jesal.json keyboards/zsa/voyager/keymaps/jesal/keymap.c
+          rm -f zsa_voyager_jesal.json.bak
+          keymap parse -q zsa_voyager_jesal.json -l BASE NAV SYMBOLS NUMPAD SYSTEM | keymap draw -k zsa/voyager - -o keymap.svg
+      - name: Fail if generated files are stale
+        run: git diff --exit-code -- zsa_voyager_jesal.json keymap.svg

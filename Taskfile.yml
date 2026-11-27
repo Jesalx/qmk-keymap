@@ -26,6 +26,11 @@ tasks:
         'keymap parse -q {{.KEYMAP_JSON}} -l {{.LAYER_NAMES}}
         | keymap draw -k {{.KEYBOARD}} - -o {{.KEYMAP_SVG}}'
 
+  lint:
+    desc: Lint the GitHub Actions workflows (same check as CI)
+    cmds:
+      - actionlint
+
   flash:
     desc: Compile and flash the keymap (put the keyboard in bootloader mode when prompted)
     cmds:

@@ -7,7 +7,7 @@
 
 // Hold shift for lower case
 #define CAPS_WORD_INVERT_ON_SHIFT
-// When idle, turn off Caps Word after 5 seconds
+// When idle, turn off Caps Word after 10 seconds
 #define CAPS_WORD_IDLE_TIMEOUT 10000
 
 // Each keypress takes two entries, so this fits about 128 keypresses shared
