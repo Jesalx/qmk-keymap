@@ -7,8 +7,10 @@ vars:
   C_SOURCES: jesal.c {{.KEYMAP_C}} keyboards/zsa/voyager/keymaps/jesal/config.h
   KEYMAP_JSON: zsa_voyager_jesal.json
   KEYMAP_SVG: keymap.svg
-  # Must match the order of `enum layers` in jesal.c.
-  LAYER_NAMES: BASE NAV SYMBOLS NUMPAD
+  # Read from `enum layers` in jesal.c, so a new layer can't drift out of sync.
+  LAYER_NAMES:
+    sh: |
+      awk '/^enum layers \{/{f=1;next} /^\};/{f=0} f{gsub(/[ ,]/,""); if ($0 != "") printf "%s%s", sep, $0; sep=" "}' jesal.c
 
 tasks:
   json:
