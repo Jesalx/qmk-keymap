@@ -48,6 +48,7 @@ bool process_detected_host_os_user(os_variant_t os) {
 // Returns the keycode to send for an XOS_* key, or KC_NO for any other key.
 static uint16_t os_shortcut(uint16_t keycode) {
     switch (keycode) {
+            // clang-format off
     case XOS_UNDO:  return mac_mode ? G(KC_Z)          : C(KC_Z);
     case XOS_REDO:  return mac_mode ? G(S(KC_Z))       : C(S(KC_Z));
     case XOS_CUT:   return mac_mode ? G(KC_X)          : C(KC_X);
@@ -65,6 +66,7 @@ static uint16_t os_shortcut(uint16_t keycode) {
     case XOS_NEWTAB:    return mac_mode ? G(KC_T)      : C(KC_T);
     case XOS_CLOSETAB:  return mac_mode ? G(KC_W)      : C(KC_W);
     case XOS_REOPENTAB: return mac_mode ? G(S(KC_T))   : C(S(KC_T));
+            // clang-format on
     }
     return KC_NO;
 }
@@ -79,7 +81,7 @@ socd_cleaner_t socd_opposing_pairs[] = {
 // sequences. Not saved to EEPROM, so they reset at power-up.
 #define LIGHT_VAL_STEP 32
 static uint8_t light_palette = PALETTEFX_AFTERBURN;
-static uint8_t light_val = 255;
+static uint8_t light_val     = 255;
 
 // Sets the color for `layer` without touching the effect, so a leader tweak
 // doesn't undo an effect picked since the layer was entered.
@@ -110,54 +112,54 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
     switch (keycode) {
-    case LEADER_GUI:
-        if (record->tap.count && record->event.pressed) {
-            super_leader_start();
-            return false;
-        }
-        break;
-    case SRCHSEL:
-        // Search the selection in a new browser tab: copy, open a tab (focuses
-        // the address bar), wait for the tab, paste, go.
-        if (record->event.pressed) {
-            tap_code16(os_shortcut(XOS_COPY));
-            tap_code16(os_shortcut(XOS_NEWTAB));
-            wait_ms(200);
-            tap_code16(os_shortcut(XOS_PASTE));
-            tap_code(KC_ENT);
-        }
-        return false;
-    case URLCOPY:
-        // Copy the page URL: focus the address bar, copy, then Esc to leave it.
-        if (record->event.pressed) {
-            tap_code16(mac_mode ? G(KC_L) : C(KC_L));
-            wait_ms(50);
-            tap_code16(os_shortcut(XOS_COPY));
-            tap_code(KC_ESC);
-        }
-        return false;
-    case RGBVALU:
-    case RGBVALD:
-    case RGBRAND:
-    case RGBDEF:
-        if (record->event.pressed) {
-            if (keycode == RGBVALU) {
-                light_val = light_val > 255 - LIGHT_VAL_STEP ? 255 : light_val + LIGHT_VAL_STEP;
-            } else if (keycode == RGBVALD) {
-                light_val = light_val < LIGHT_VAL_STEP ? 0 : light_val - LIGHT_VAL_STEP;
-            } else if (keycode == RGBRAND) {
-                // PALETTEFX_USER_0 follows the built-in palettes, so it is their count.
-                light_palette = (light_palette + 1 + timer_read() % (PALETTEFX_USER_0 - 1)) % PALETTEFX_USER_0;
-            } else {
-                light_palette = PALETTEFX_AFTERBURN;
-                light_val = 255;
-                rgb_matrix_enable_noeeprom();
-                layer_state_set_user(layer_state); // Restores each layer's effect too.
+        case LEADER_GUI:
+            if (record->tap.count && record->event.pressed) {
+                super_leader_start();
                 return false;
             }
-            lighting_apply_color(get_highest_layer(layer_state|default_layer_state));
-        }
-        return false;
+            break;
+        case SRCHSEL:
+            // Search the selection in a new browser tab: copy, open a tab (focuses
+            // the address bar), wait for the tab, paste, go.
+            if (record->event.pressed) {
+                tap_code16(os_shortcut(XOS_COPY));
+                tap_code16(os_shortcut(XOS_NEWTAB));
+                wait_ms(200);
+                tap_code16(os_shortcut(XOS_PASTE));
+                tap_code(KC_ENT);
+            }
+            return false;
+        case URLCOPY:
+            // Copy the page URL: focus the address bar, copy, then Esc to leave it.
+            if (record->event.pressed) {
+                tap_code16(mac_mode ? G(KC_L) : C(KC_L));
+                wait_ms(50);
+                tap_code16(os_shortcut(XOS_COPY));
+                tap_code(KC_ESC);
+            }
+            return false;
+        case RGBVALU:
+        case RGBVALD:
+        case RGBRAND:
+        case RGBDEF:
+            if (record->event.pressed) {
+                if (keycode == RGBVALU) {
+                    light_val = light_val > 255 - LIGHT_VAL_STEP ? 255 : light_val + LIGHT_VAL_STEP;
+                } else if (keycode == RGBVALD) {
+                    light_val = light_val < LIGHT_VAL_STEP ? 0 : light_val - LIGHT_VAL_STEP;
+                } else if (keycode == RGBRAND) {
+                    // PALETTEFX_USER_0 follows the built-in palettes, so it is their count.
+                    light_palette = (light_palette + 1 + timer_read() % (PALETTEFX_USER_0 - 1)) % PALETTEFX_USER_0;
+                } else {
+                    light_palette = PALETTEFX_AFTERBURN;
+                    light_val     = 255;
+                    rgb_matrix_enable_noeeprom();
+                    layer_state_set_user(layer_state); // Restores each layer's effect too.
+                    return false;
+                }
+                lighting_apply_color(get_highest_layer(layer_state | default_layer_state));
+            }
+            return false;
     }
     return true;
 };
@@ -172,7 +174,7 @@ void keyboard_post_init_user(void) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    const uint8_t layer = get_highest_layer(state|default_layer_state);
+    const uint8_t layer = get_highest_layer(state | default_layer_state);
     switch (layer) {
         case BASE:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_COMMUNITY_MODULE_PALETTEFX_VORTEX);
@@ -195,7 +197,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #define NAV_ARROWS_LED_LAST 41
 
 bool rgb_matrix_indicators_user(void) {
-    switch (get_highest_layer(layer_state|default_layer_state)) {
+    switch (get_highest_layer(layer_state | default_layer_state)) {
         case NAV:
             for (uint8_t i = NAV_ARROWS_LED_FIRST; i <= NAV_ARROWS_LED_LAST; i++) {
                 rgb_matrix_set_color(i, 129, 216, 208);

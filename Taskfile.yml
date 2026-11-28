@@ -4,6 +4,7 @@ vars:
   KEYBOARD: zsa/voyager
   KEYMAP: jesal
   KEYMAP_C: keyboards/zsa/voyager/keymaps/jesal/keymap.c
+  C_SOURCES: jesal.c {{.KEYMAP_C}} keyboards/zsa/voyager/keymaps/jesal/config.h
   KEYMAP_JSON: zsa_voyager_jesal.json
   KEYMAP_SVG: keymap.svg
   # Must match the order of `enum layers` in jesal.c.
@@ -45,11 +46,29 @@ tasks:
     cmds:
       - qmk lint -kb {{.KEYBOARD}} -km {{.KEYMAP}}
 
+  format:
+    desc: Format the keymap C sources with clang-format
+    cmds:
+      - nix-shell -p clang-tools --run 'qmk format-c {{.C_SOURCES}}'
+
+  format-check:
+    desc: Fail if the keymap C sources are not clang-formatted (same check as CI)
+    cmds:
+      # Use clang-format from PATH when present (CI), else fetch it via nix.
+      - |
+        check='qmk format-c -n {{.C_SOURCES}}'
+        if command -v clang-format >/dev/null; then
+          sh -c "$check"
+        else
+          nix-shell -p clang-tools --run "$check"
+        fi
+
   check:
     desc: Run every CI check locally
     cmds:
       - task: lint
       - task: qmk-lint
+      - task: format-check
 
   flash:
     desc: Compile and flash the keymap (put the keyboard in bootloader mode when prompted)

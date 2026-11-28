@@ -82,11 +82,13 @@ jobs:
           cache-dependency-path: .github/workflows/build.yaml
       - name: Install tools
         run: |
-          pip install qmk keymap-drawer==0.23.0 go-task-bin
+          pip install qmk keymap-drawer==0.23.0 go-task-bin clang-format
           qmk config user.qmk_home="$PWD/qmk_firmware"
           qmk config user.overlay_dir="$PWD"
       - name: Lint keymap
         run: task qmk-lint
+      - name: Check C formatting
+        run: task format-check
       - name: Regenerate keymap JSON and SVG
         run: task
       - name: Fail if generated files are stale
