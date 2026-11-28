@@ -124,15 +124,7 @@ jobs:
     steps:
       - name: Checkout userspace
         uses: actions/checkout@v7
-      # The ref is a commit, so the checkout can be cached by that commit.
-      - name: Cache qmk_firmware
-        id: qmk-cache
-        uses: actions/cache@v6
-        with:
-          path: qmk_firmware
-          key: qmk_firmware-${{ needs.pins.outputs.qmk_ref }}
       - name: Checkout qmk_firmware
-        if: steps.qmk-cache.outputs.cache-hit != 'true'
         uses: actions/checkout@v7
         with:
           repository: qmk/qmk_firmware
