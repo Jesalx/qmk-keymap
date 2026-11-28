@@ -27,6 +27,8 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@v23
       - name: Cache Nix store
         uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: false
       - name: Update flake inputs
         run: nix flake update
       - name: Detect changes
