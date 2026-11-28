@@ -1,0 +1,72 @@
+---
+name: update
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: update
+
+jobs:
+  update:
+    name: update flake inputs
+    runs-on: ubuntu-latest
+    # contents: push the update branch and main. actions: dispatch and watch
+    # build.yaml (pushes made with the default token do not trigger workflows).
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v23
+      - name: Cache Nix store
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+      - name: Update flake inputs
+        run: nix flake update
+      - name: Detect changes
+        id: diff
+        run: |
+          if git diff --quiet -- flake.lock; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Push update branch
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c auto/update
+          git commit -m "build: update flake inputs" -- flake.lock
+          git push --force origin auto/update
+      - name: Build the update branch
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run build.yaml --ref auto/update
+          sha=$(git rev-parse HEAD)
+          id=""
+          for _ in $(seq 1 30); do
+            id=$(gh run list --workflow build.yaml --branch auto/update --event workflow_dispatch --json databaseId,headSha --jq ".[] | select(.headSha == \"$sha\") | .databaseId" | head -n 1)
+            [ -n "$id" ] && break
+            sleep 2
+          done
+          if [ -z "$id" ]; then
+            echo "build run for $sha not found" >&2
+            exit 1
+          fi
+          gh run watch "$id" --exit-status
+      # Reached only when the build above passed. A fast-forward, so it fails
+      # instead of overwriting if main moved in the meantime.
+      - name: Merge into main
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git push origin auto/update:main
+          git push origin --delete auto/update

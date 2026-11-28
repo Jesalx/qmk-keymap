@@ -3,6 +3,13 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+  # Not used by the dev shell: it only records the qmk_firmware commit that CI
+  # builds against, so `nix flake update` bumps it with the other pins.
+  inputs.qmk_firmware = {
+    url = "github:qmk/qmk_firmware";
+    flake = false;
+  };
+
   outputs =
     { nixpkgs, ... }:
     let

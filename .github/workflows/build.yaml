@@ -48,12 +48,31 @@ permissions:
   contents: write
 
 jobs:
+  # The qmk_firmware commit comes from flake.lock, so `nix flake update` (and
+  # the update workflow) is the only place it is bumped.
+  pins:
+    name: pins
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      qmk_ref: ${{ steps.qmk.outputs.ref }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Read qmk_firmware pin
+        id: qmk
+        run: |
+          echo "ref=$(jq -er '.nodes.qmk_firmware.locked.rev' flake.lock)" >> "$GITHUB_OUTPUT"
+
   build:
     name: qmk userspace build
-    uses: qmk/.github/.github/workflows/qmk_userspace_build.yml@main
+    needs: pins
+    # Pinned to a commit (qmk/.github main as of 2026-11-27); bump by hand.
+    uses: qmk/.github/.github/workflows/qmk_userspace_build.yml@01daf5113fa50804558f21cc074ab99ba84ddeaf
     with:
       qmk_repo: qmk/qmk_firmware
-      qmk_ref: master
+      qmk_ref: ${{ needs.pins.outputs.qmk_ref }}
 
   flake:
     name: flake
@@ -90,6 +109,7 @@ jobs:
 
   generated:
     name: generated files
+    needs: pins
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -100,11 +120,19 @@ jobs:
     steps:
       - name: Checkout userspace
         uses: actions/checkout@v7
+      # The ref is a commit, so the checkout can be cached by that commit.
+      - name: Cache qmk_firmware
+        id: qmk-cache
+        uses: actions/cache@v6
+        with:
+          path: qmk_firmware
+          key: qmk_firmware-${{ needs.pins.outputs.qmk_ref }}
       - name: Checkout qmk_firmware
+        if: steps.qmk-cache.outputs.cache-hit != 'true'
         uses: actions/checkout@v7
         with:
           repository: qmk/qmk_firmware
-          ref: master
+          ref: ${{ needs.pins.outputs.qmk_ref }}
           path: qmk_firmware
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v23
