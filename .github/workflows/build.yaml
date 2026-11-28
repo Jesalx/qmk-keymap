@@ -15,6 +15,9 @@ on:
       - README.md
       - tools/**
       - Taskfile.yml
+      - flake.nix
+      - flake.lock
+      - .clang-format
   pull_request:
     paths:
       - .github/workflows/build.yaml
@@ -28,6 +31,9 @@ on:
       - README.md
       - tools/**
       - Taskfile.yml
+      - flake.nix
+      - flake.lock
+      - .clang-format
   workflow_dispatch:
 
 # A newer push to the same ref supersedes any run still in progress.
@@ -49,23 +55,44 @@ jobs:
       qmk_repo: qmk/qmk_firmware
       qmk_ref: master
 
-  actionlint:
-    name: actionlint
+  flake:
+    name: flake
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v23
+      - name: Check flake
+        run: nix flake check
+
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: nix develop --command bash -e {0}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v23
       - name: Lint workflows
-        run: |
-          docker run --rm -v "$PWD:/repo" --workdir /repo rhysd/actionlint:1.7.12 -color
+        run: task lint
 
   generated:
     name: generated files
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    # Every run step executes inside the flake's dev shell.
+    defaults:
+      run:
+        shell: nix develop --command bash -e {0}
     steps:
       - name: Checkout userspace
         uses: actions/checkout@v7
@@ -75,15 +102,10 @@ jobs:
           repository: qmk/qmk_firmware
           ref: master
           path: qmk_firmware
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: "3.12"
-          cache: pip
-          cache-dependency-path: .github/workflows/build.yaml
-      - name: Install tools
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v23
+      - name: Configure qmk
         run: |
-          pip install qmk keymap-drawer==0.23.0 go-task-bin clang-format
           qmk config user.qmk_home="$PWD/qmk_firmware"
           qmk config user.overlay_dir="$PWD"
       - name: Lint keymap
