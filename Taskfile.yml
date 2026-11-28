@@ -22,14 +22,7 @@ tasks:
     desc: Regenerate the layout image for the README from the keymap JSON
     deps: [json]
     cmds:
-      # Use keymap-drawer from PATH when present (CI), else fetch it via nix.
-      - |
-        draw='keymap parse -q {{.KEYMAP_JSON}} -l {{.LAYER_NAMES}} | keymap draw -k {{.KEYBOARD}} - -o {{.KEYMAP_SVG}}'
-        if command -v keymap >/dev/null; then
-          sh -c "$draw"
-        else
-          nix-shell -p keymap-drawer --run "$draw"
-        fi
+      - keymap parse -q {{.KEYMAP_JSON}} -l {{.LAYER_NAMES}} | keymap draw -k {{.KEYBOARD}} - -o {{.KEYMAP_SVG}}
 
   leader:
     desc: Regenerate the leader sequence table in the README from super_leader.def
@@ -49,19 +42,12 @@ tasks:
   format:
     desc: Format the keymap C sources with clang-format
     cmds:
-      - nix-shell -p clang-tools --run 'qmk format-c {{.C_SOURCES}}'
+      - qmk format-c {{.C_SOURCES}}
 
   format-check:
     desc: Fail if the keymap C sources are not clang-formatted (same check as CI)
     cmds:
-      # Use clang-format from PATH when present (CI), else fetch it via nix.
-      - |
-        check='qmk format-c -n {{.C_SOURCES}}'
-        if command -v clang-format >/dev/null; then
-          sh -c "$check"
-        else
-          nix-shell -p clang-tools --run "$check"
-        fi
+      - qmk format-c -n {{.C_SOURCES}}
 
   check:
     desc: Run every CI check locally
@@ -73,7 +59,7 @@ tasks:
   flash:
     desc: Compile and flash the keymap (put the keyboard in bootloader mode when prompted)
     cmds:
-      - nix-shell -p dfu-util --run 'qmk flash -kb {{.KEYBOARD}} -km {{.KEYMAP}}'
+      - qmk flash -kb {{.KEYBOARD}} -km {{.KEYMAP}}
 
   default:
     desc: Regenerate all generated files

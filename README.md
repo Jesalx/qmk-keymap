@@ -21,10 +21,10 @@ qmk config user.overlay_dir="$(realpath path/to/qmk-keymap)"
 qmk flash -kb zsa/voyager -km jesal
 ```
 
-If `dfu-util` is not installed, run the flash command inside `nix-shell`:
+If `dfu-util` is not installed, run the flash command inside the Nix dev shell (which also provides `qmk`, `go-task`, `keymap-drawer`, `clang-format` and `actionlint`):
 
 ```bash
-nix-shell -p dfu-util --run 'qmk flash -kb zsa/voyager -km jesal'
+nix develop -c qmk flash -kb zsa/voyager -km jesal
 ```
 
 ## Editing the layout

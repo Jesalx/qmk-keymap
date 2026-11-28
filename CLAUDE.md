@@ -7,7 +7,8 @@ QMK external userspace. `jesal.c` is included by `keymaps/jesal/keymap.c`; third
 - Build: `qmk compile -kb zsa/voyager -km jesal`
 - Lint: `task qmk-lint` (`qmk lint`; needs a comment as the first line of each keymap C/H file). `task check` runs all CI lints.
 - Format: `task format` (clang-format via `qmk format-c`, using the repo `.clang-format` copied from QMK); `task format-check` is the CI check. The `os_shortcut` table in `jesal.c` is wrapped in `// clang-format off` to stay one row per key.
-- Flash: `task flash` (runs `qmk flash` inside `nix-shell -p dfu-util`)
+- Tools: `flake.nix` is the dev shell, entered automatically by direnv (`.envrc`, run `direnv allow` once) or manually with `nix develop` / `nix develop -c task <name>`; every `task` target expects its tools on `PATH` and does not call `nix-shell` itself. In this jj-colocated repo, new flake files are invisible to `nix` until committed, so use `nix develop path:.` meanwhile. `flake.lock` pins nixpkgs, so `keymap-drawer` and `actionlint` there match the versions pinned in CI.
+- Flash: `task flash` (`qmk flash`; needs `dfu-util`, provided by the dev shell)
 - Regenerate `zsa_voyager_jesal.json`, `keymap.svg` and the README leader table: `task`
 
 ## Conventions
