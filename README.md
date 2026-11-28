@@ -35,6 +35,25 @@ Edit only `keyboards/zsa/voyager/keymaps/jesal/keymap.c`. `zsa_voyager_jesal.jso
 task
 ```
 
+## Development
+
+Tools are provided by the Nix flake (`qmk`, `go-task`, `keymap-drawer`, `clang-format`, `actionlint`, `dfu-util`), pinned by `flake.lock`. Enter the shell with `nix develop`, or run `direnv allow` once to enter it automatically on `cd`.
+
+| Command | Description |
+| --- | --- |
+| `task` | Regenerate the JSON, SVG and leader table |
+| `task check` | Run every CI lint: `actionlint`, `qmk lint` and the clang-format check |
+| `task format` | Format the C sources with clang-format |
+| `task flash` | Compile and flash the keymap |
+
+## CI and releases
+
+Every push and pull request builds the firmware and checks that the lints pass, the flake evaluates, and the generated files are up to date. The build uses the `qmk_firmware` commit pinned in `flake.lock`.
+
+A push to `main` that changes the firmware inputs (`qmk.json`, `keyboards/`, `modules/`, `*.c` or `*.h`) and passes CI publishes a GitHub release tagged `vYYYY.MM.DD-<sha>` with the firmware `.bin` attached.
+
+A weekly workflow (`update.yaml`) runs `nix flake update`, builds the result on a branch, and merges it into `main` only if that build passes.
+
 ## Layout
 
 ![Keymap layout](keymap.svg)
