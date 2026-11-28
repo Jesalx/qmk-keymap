@@ -33,6 +33,13 @@ SEQ_KEY(browser_close_tab, (KC_B, KC_C), XOS_CLOSETAB) // Close tab
 SEQ_KEY(browser_reopen_tab, (KC_B, KC_T), XOS_REOPENTAB) // Reopen closed tab
 SEQ_KEY(browser_copy_url, (KC_B, KC_U), URLCOPY) // Copy the page URL
 
+SEQ_KEY(media_play_pause, (KC_M, KC_P), KC_MPLY) // Play or pause media
+SEQ_KEY(media_next, (KC_M, KC_N), KC_MNXT) // Next track
+SEQ_KEY(media_previous, (KC_M, KC_B), KC_MPRV) // Previous track
+SEQ_KEY(media_volume_up, (KC_M, KC_U), KC_VOLU) // Volume up
+SEQ_KEY(media_volume_down, (KC_M, KC_D), KC_VOLD) // Volume down
+SEQ_KEY(media_mute, (KC_M, KC_M), KC_MUTE) // Mute
+
 // Types the command, then taps Left 6 times to park the cursor on the name.
 SEQ_STR(jj_bookmark_set, (KC_J, KC_B), "jj b s  -r @-" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT)) // jj bookmark set at @-, cursor on the name
 SEQ_STR(jj_commit, (KC_J, KC_C), "jj commit -m \"\"" SS_TAP(X_LEFT)) // jj commit with the cursor inside the quotes
