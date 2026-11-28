@@ -33,7 +33,8 @@ on:
 # A newer push to the same ref supersedes any run still in progress.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Never cancel a run on main, so a release can't be cut off half way.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 # The reusable workflow declares contents: write, and a caller must grant at
 # least what it requests or the run fails at startup.
@@ -93,3 +94,42 @@ jobs:
         run: task
       - name: Fail if generated files are stale
         run: git diff --exit-code -- zsa_voyager_jesal.json keymap.svg README.md
+
+  release:
+    name: release
+    needs: [build, generated]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      # Only firmware inputs warrant a release; README, SVG, tooling and CI
+      # changes do not alter the binary.
+      - name: Detect firmware changes
+        id: changes
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          files=$(git diff --name-only "$BEFORE" "$GITHUB_SHA" -- qmk.json keyboards modules '*.c' '*.h')
+          if [ -n "$files" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Download firmware
+        if: steps.changes.outputs.changed == 'true'
+        uses: actions/download-artifact@v8
+        with:
+          name: Firmware
+          path: firmware
+      - name: Create release
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="v$(date -u +%Y.%m.%d)-${GITHUB_SHA::7}"
+          gh release create "$tag" firmware/*.bin --target "$GITHUB_SHA" --generate-notes
